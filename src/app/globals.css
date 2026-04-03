@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 100% 0 0; /* #FFFFFF */
+    --foreground: 20% 0.02 270; /* #0F172A */
+
+    --card: 100% 0 0;
+    --card-foreground: 20% 0.02 270;
+
+    --popover: 100% 0 0;
+    --popover-foreground: 20% 0.02 270;
+
+    --primary: 58% 0.23 270; /* #6366F1 */
+    --primary-dark: 48% 0.20 270; /* #4F46E5 */
+    --primary-light: 68% 0.18 270; /* #818CF8 */
+    --primary-foreground: 100% 0 0;
+
+    --secondary: 45% 0.03 270; /* #475569 */
+    --secondary-foreground: 100% 0 0;
+    
+    --success: 65% 0.22 150; /* #10B981 */
+
+    --muted: 65% 0.02 270; /* #94A3B8 */
+    --muted-foreground: 45% 0.03 270;
+
+    --accent: 75% 0.18 80; /* #F59E0B */
+    --accent-foreground: 20% 0.02 270;
+
+    --destructive: 60% 0.22 20; /* custom red based on OKLCH */
+    --destructive-foreground: 100% 0 0;
+
+    --border: 92% 0.01 260;
+    --input: 92% 0.01 260;
+    --ring: 58% 0.23 270;
+
+    --radius: 12px;
+
+    --surface: 98% 0.01 260; /* #F8FAFC */
+    --elevated: 100% 0 0 / 0.8;
+  }
+
+  .dark {
+    --background: 15% 0.02 270; /* #0F172A */
+    --foreground: 98% 0 0;
+
+    --card: 18% 0.02 270;
+    --card-foreground: 98% 0 0;
+
+    --popover: 18% 0.02 270;
+    --popover-foreground: 98% 0 0;
+
+    --primary: 68% 0.18 270;
+    --primary-dark: 58% 0.23 270;
+    --primary-light: 78% 0.12 270;
+    --primary-foreground: 20% 0.02 270;
+
+    --secondary: 45% 0.03 270;
+    --secondary-foreground: 98% 0 0;
+
+    --muted: 35% 0.02 270;
+    --muted-foreground: 65% 0.02 270;
+
+    --accent: 75% 0.18 80;
+    --accent-foreground: 20% 0.02 270;
+
+    --destructive: 60% 0.22 20;
+    --destructive-foreground: 98% 0 0;
+
+    --border: 30% 0.02 270;
+    --input: 30% 0.02 270;
+    --ring: 68% 0.18 270;
+
+    --surface: 22% 0.03 270; /* #1E293B */
+    --elevated: 18% 0.02 270 / 0.8;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(oklch(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light;
+  }
+
+  .text-gradient-purple {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500;
+  }
+
+  .bg-mesh {
+    background-image:
+      radial-gradient(at 40% 20%, oklch(var(--primary) / 0.15) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, oklch(var(--primary-light) / 0.15) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, oklch(var(--primary-dark) / 0.1) 0px, transparent 50%);
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-xl bg-white/80 dark:bg-black/80;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px oklch(58% 0.23 270 / 0.15);
+  }
+
+  .shadow-glow-sm {
+    box-shadow: 0 0 30px -6px oklch(58% 0.23 270 / 0.3);
+  }
+
+  .shadow-glow-lg {
+    box-shadow: 0 0 80px -15px oklch(58% 0.23 270 / 0.5);
+  }
+}
