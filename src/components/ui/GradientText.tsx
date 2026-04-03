@@ -10,10 +10,7 @@ interface GradientTextProps extends React.HTMLAttributes<HTMLSpanElement> {
 export function GradientText({ children, className, as: Component = "span", ...props }: GradientTextProps) {
   return (
     <Component
-      className={cn(
-        "bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light",
-        className
-      )}
+      className={cn("text-gradient", className)}
       {...props}
     >
       {children}

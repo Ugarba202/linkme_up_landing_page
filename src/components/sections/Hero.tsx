@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { ArrowRight, PlayCircle, CheckCircle2 } from "lucide-react";
+import React from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ArrowRight, PlayCircle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GradientText } from "@/components/ui/GradientText";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { AnimatedMeshBackground } from "@/components/ui/AnimatedMeshBackground";
 import { PhoneMockup } from "@/components/ui/PhoneMockup";
@@ -13,155 +12,143 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
+    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
   },
 };
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+  hidden: { y: 24, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 80, damping: 20 } },
 };
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // 3D Tilt logic
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [15, -15]), { damping: 30, stiffness: 100 });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-15, 15]), { damping: 30, stiffness: 100 });
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [12, -12]), { damping: 30, stiffness: 100 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), { damping: 30, stiffness: 100 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
   };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); };
 
   return (
-    <AnimatedMeshBackground className="pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden flex items-center">
+    <AnimatedMeshBackground className="min-h-screen flex items-center pt-24 pb-16 md:pt-32 md:pb-24">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-8">
-          
+        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-12">
+
           {/* Left Content */}
-          <motion.div 
-            className="w-full lg:w-3/5 text-center lg:text-left z-10"
+          <motion.div
+            className="w-full lg:w-[55%] text-center lg:text-left"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/20 bg-accent/5 backdrop-blur-md mb-8">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+            {/* Eyebrow */}
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 mb-8">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
               </span>
-              <span className="text-sm font-medium tracking-tight text-accent-foreground dark:text-accent">Introducing LinkQR</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary-light">Introducing LinkMeUp</span>
             </motion.div>
-            
-            <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl lg:text-[80px] leading-[1.1] font-black tracking-tight mb-6">
-              One QR Code.<br />
-              <GradientText>All Your Links.</GradientText><br />
-              Forever.
+
+            {/* Headline */}
+            <motion.h1 variants={itemVariants} className="text-5xl sm:text-6xl md:text-7xl lg:text-[76px] leading-[1.05] font-extrabold tracking-tight mb-6">
+              One Scan.{" "}
+              <span className="text-gradient">All Your Socials.</span>
             </motion.h1>
-            
-            <motion.p variants={itemVariants} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10 text-balance">
-              Connect your social media. Generate a permanent QR. Share it anywhere. Update anytime—your QR never changes.
+
+            {/* Subheadline */}
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed text-balance">
+              Connect your social media. Generate a permanent QR code. Share it anywhere. Update anytime — your QR never changes.
             </motion.p>
-            
+
+            {/* CTAs */}
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10">
               <MagneticButton>
-                <Button size="lg" className="rounded-full px-8 h-14 text-base font-semibold group w-full sm:w-auto shadow-glow">
+                <Button size="lg" className="rounded-full px-8 h-14 text-base font-semibold bg-primary hover:bg-primary-dark group shadow-glow w-full sm:w-auto">
                   Get Started Free
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </MagneticButton>
-              <Button variant="outline" size="lg" className="rounded-full px-8 h-14 text-base font-semibold w-full sm:w-auto bg-transparent backdrop-blur-md border border-border/50 hover:bg-muted/50">
+              <Button variant="outline" size="lg" className="rounded-full px-8 h-14 text-base font-semibold border-white/10 bg-white/5 hover:bg-white/10 text-foreground w-full sm:w-auto">
                 <PlayCircle className="mr-2 w-5 h-5" />
                 Watch Demo
               </Button>
             </motion.div>
-            
-            <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-muted-foreground font-medium">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-success" />
-                <span>No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-success" />
-                <span>Free forever tier</span>
-              </div>
+
+            {/* Trust */}
+            <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              {["Free forever", "No app needed to scan", "Works everywhere"].map((item) => (
+                <div key={item} className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-success" />
+                  <span>{item}</span>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
 
-          {/* Right Visual - 3D Phone with QR */}
-          <motion.div 
-            className="w-full lg:w-2/5 flex justify-center perspective-[1000px] z-10"
-            initial={{ opacity: 0, scale: 0.8 }}
+          {/* Phone Mockup */}
+          <motion.div
+            className="w-full lg:w-[45%] flex justify-center"
+            initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            ref={containerRef}
+            transition={{ duration: 0.8, delay: 0.3 }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
+            style={{ perspective: 1000 }}
           >
             <motion.div
-              style={{
-                rotateX,
-                rotateY,
-                transformStyle: "preserve-3d",
-              }}
-              className="relative cursor-pointer"
+              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+              className="relative"
             >
+              {/* Glow behind phone */}
               <motion.div
-                className="absolute inset-0 bg-primary/30 blur-[100px] rounded-full scale-150 -z-10"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  opacity: [0.5, 0.8, 0.5],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                className="absolute inset-0 bg-primary/25 blur-[100px] rounded-full scale-125 -z-10"
+                animate={{ scale: [1.15, 1.3, 1.15], opacity: [0.4, 0.6, 0.4] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               />
-              
-              <motion.div 
-                className="relative animate-float"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <div className="relative shadow-2xl rounded-[40px]">
-                  <PhoneMockup theme="light">
-                    <div className="w-full h-full bg-slate-50 flex flex-col items-center pt-20 px-6 relative mt-16 scale-90">
-                       <GradientText className="text-3xl font-bold mb-4">@alexdesign</GradientText>
-                       <p className="text-slate-500 mb-8 max-w-[200px] text-center text-sm">Product Designer & Digital Creator</p>
-                       
-                       <div className="bg-white p-4 rounded-3xl shadow-xl w-48 h-48 flex items-center justify-center mb-8 border border-slate-100 relative">
-                         {/* Abstract QR visual */}
-                         <div className="w-full h-full bg-grid-pattern opacity-60 rounded-xl relative overflow-hidden">
-                           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 mix-blend-multiply"></div>
-                           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-md">
-                              <div className="w-8 h-8 rounded shrink-0 bg-gradient-to-br from-indigo-500 to-purple-500"></div>
-                           </div>
-                         </div>
-                       </div>
-                       
-                       <Button className="w-full rounded-full animate-pulse-glow" variant="default">
-                         Save Contact
-                       </Button>
+
+              <div className="animate-float">
+                <PhoneMockup className="shadow-2xl shadow-primary/10">
+                  {/* App Screen Content */}
+                  <div className="w-full h-full flex flex-col items-center pt-14 px-5">
+                    {/* Profile Header */}
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-light mb-3 ring-2 ring-primary/30 ring-offset-2 ring-offset-[#0a0a12]" />
+                    <span className="text-gradient font-bold text-lg mb-1">@alexdesign</span>
+                    <span className="text-[#8888a0] text-xs mb-5">Product Designer & Creator</span>
+
+                    {/* QR Code */}
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-3 mb-5">
+                      <div className="w-36 h-36 bg-grid-pattern rounded-xl relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary-light/20" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-[#0a0a12] rounded-lg flex items-center justify-center">
+                          <div className="w-6 h-6 rounded bg-gradient-to-br from-primary to-primary-light" />
+                        </div>
+                      </div>
                     </div>
-                  </PhoneMockup>
-                </div>
-              </motion.div>
+
+                    {/* Social Buttons */}
+                    <div className="w-full space-y-2.5">
+                      {[
+                        { label: "Instagram", color: "from-pink-500 to-purple-500" },
+                        { label: "TikTok", color: "from-white/10 to-white/5" },
+                        { label: "LinkedIn", color: "from-blue-600 to-blue-500" },
+                      ].map((s) => (
+                        <div
+                          key={s.label}
+                          className="w-full py-3 rounded-xl bg-white/5 border border-white/8 text-center text-sm font-medium text-foreground"
+                        >
+                          {s.label}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </PhoneMockup>
+              </div>
             </motion.div>
           </motion.div>
         </div>

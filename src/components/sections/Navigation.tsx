@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
-import { GradientText } from "@/components/ui/GradientText";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const NAV_LINKS = [
-  { name: "Product", href: "#product" },
+  { name: "How it works", href: "#how-it-works" },
   { name: "Features", href: "#features" },
   { name: "Pricing", href: "#pricing" },
-  { name: "About", href: "#about" },
 ];
 
 export function Navigation() {
@@ -25,16 +23,19 @@ export function Navigation() {
 
   return (
     <motion.header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        isScrolled ? "py-2 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-border/50 shadow-sm" : "py-4 bg-transparent"
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? "py-3 glass-effect shadow-lg shadow-black/20"
+          : "py-5 bg-transparent"
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 group">
-          <GradientText className="text-2xl font-black tracking-tight" as="span">LinkQR</GradientText>
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-2">
+          <span className="text-2xl font-black tracking-tight text-gradient">LinkMeUp</span>
         </a>
 
         {/* Desktop Nav */}
@@ -46,53 +47,50 @@ export function Navigation() {
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
             >
               {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full origin-center"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-4">
+        {/* Desktop CTA */}
+        <div className="hidden md:block">
           <MagneticButton>
-            <Button className="rounded-full px-6 shadow-glow hover:shadow-glow-lg transition-all">
+            <Button className="rounded-full px-6 bg-primary hover:bg-primary-dark text-white shadow-glow transition-all">
               Download App
             </Button>
           </MagneticButton>
         </div>
 
-        {/* Mobile Nav */}
+        {/* Mobile */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-foreground">
-                <Menu size={24} />
+              <Button variant="ghost" size="icon" className="text-foreground hover:bg-white/5">
+                <Menu size={22} />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:w-80 p-0 border-l border-border/50 bg-background/95 backdrop-blur-xl">
-              <div className="flex flex-col h-full p-6">
-                <div className="flex items-center justify-between mb-8">
-                  <GradientText className="text-2xl font-black tracking-tight">LinkQR</GradientText>
+            <SheetContent side="right" className="w-full sm:w-80 bg-[#0a0a12] border-l border-white/5 p-0">
+              <div className="flex flex-col h-full p-8">
+                <div className="flex items-center justify-between mb-12">
+                  <span className="text-2xl font-black text-gradient">LinkMeUp</span>
                   <SheetClose asChild>
-                    <Button variant="ghost" size="icon">
-                      <X size={24} />
-                    </Button>
+                    <Button variant="ghost" size="icon" className="hover:bg-white/5"><X size={22} /></Button>
                   </SheetClose>
                 </div>
-                
-                <nav className="flex flex-col gap-6 mt-8">
+                <nav className="flex flex-col gap-6">
                   {NAV_LINKS.map((link) => (
                     <SheetClose asChild key={link.name}>
                       <a
                         href={link.href}
-                        className="text-2xl font-medium tracking-tight text-foreground hover:text-primary transition-colors"
+                        className="text-2xl font-semibold text-foreground hover:text-primary transition-colors"
                       >
                         {link.name}
                       </a>
                     </SheetClose>
                   ))}
                 </nav>
-
                 <div className="mt-auto pb-8">
-                  <Button className="w-full rounded-full py-6 text-lg shadow-glow">
+                  <Button className="w-full rounded-full py-6 text-lg bg-primary hover:bg-primary-dark shadow-glow">
                     Download App
                   </Button>
                 </div>

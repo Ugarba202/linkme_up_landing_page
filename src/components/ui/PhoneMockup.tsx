@@ -4,35 +4,31 @@ import { cn } from "@/lib/utils";
 interface PhoneMockupProps {
   children?: React.ReactNode;
   className?: string;
-  theme?: "light" | "dark";
 }
 
-export function PhoneMockup({ children, className, theme = "light" }: PhoneMockupProps) {
+export function PhoneMockup({ children, className }: PhoneMockupProps) {
   return (
     <div
       className={cn(
-        "relative rounded-[40px] border-[8px] border-slate-900 bg-black shadow-xl overflow-hidden ring-4 ring-slate-800/10",
-        "w-[300px] h-[600px] flex-shrink-0",
+        "relative rounded-[44px] border-[6px] border-[#2a2a3e] bg-[#1a1a2e] shadow-2xl overflow-hidden",
+        "w-[280px] h-[580px] flex-shrink-0",
         className
       )}
     >
-      {/* Dynamic Island / Notch */}
-      <div className="absolute top-0 inset-x-0 mx-auto w-[120px] h-[30px] bg-black rounded-b-3xl z-50 flex items-center justify-center">
-        <div className="w-[80%] h-1/2 bg-slate-900 rounded-full opacity-50" />
+      {/* Dynamic Island */}
+      <div className="absolute top-0 inset-x-0 flex justify-center z-50">
+        <div className="w-[100px] h-[28px] bg-[#1a1a2e] rounded-b-2xl flex items-center justify-center">
+          <div className="w-[60px] h-[14px] bg-[#0a0a12] rounded-full" />
+        </div>
       </div>
 
-      {/* Screen Frame */}
-      <div
-        className={cn(
-          "relative w-full h-full overflow-hidden bg-background outline-none font-sans",
-          theme === "dark" && "dark"
-        )}
-      >
+      {/* Screen */}
+      <div className="relative w-full h-full overflow-hidden bg-[#0a0a12] rounded-[38px]">
         {children}
       </div>
-      
+
       {/* Home Indicator */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1/3 h-1 bg-white/20 rounded-full z-50" />
+      <div className="absolute bottom-[6px] left-1/2 -translate-x-1/2 w-[100px] h-[4px] bg-white/15 rounded-full z-50" />
     </div>
   );
 }

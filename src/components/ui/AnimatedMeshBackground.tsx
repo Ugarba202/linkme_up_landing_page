@@ -10,22 +10,17 @@ interface AnimatedMeshBackgroundProps {
 
 export function AnimatedMeshBackground({ className, children }: AnimatedMeshBackgroundProps) {
   return (
-    <div className={cn("relative overflow-hidden w-full h-full min-h-screen bg-background", className)}>
-      {/* Base animated mesh logic */}
-      <div className="absolute inset-0 z-0 bg-mesh opacity-50 block mix-blend-normal"></div>
-      
-      {/* Decorative blobs */}
-      <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/20 blur-[120px] rounded-full mix-blend-multiply animate-float"></div>
-      <div className="absolute top-[20%] -right-[10%] w-[30%] h-[50%] bg-primary-light/20 blur-[120px] rounded-full mix-blend-multiply animate-float-delayed"></div>
-      <div className="absolute -bottom-[10%] left-[20%] w-[50%] h-[40%] bg-accent/10 blur-[150px] rounded-full mix-blend-multiply animate-float"></div>
-      
-      {/* Grid Overlay */}
-      <div className="absolute inset-0 z-0 bg-grid-pattern opacity-40"></div>
+    <div className={cn("relative overflow-hidden w-full bg-background", className)}>
+      {/* Animated gradient blobs */}
+      <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-primary/15 blur-[120px] rounded-full animate-float pointer-events-none" />
+      <div className="absolute top-[30%] -right-[15%] w-[40%] h-[40%] bg-primary-light/10 blur-[130px] rounded-full animate-float-delayed pointer-events-none" />
+      <div className="absolute -bottom-[10%] left-[30%] w-[40%] h-[30%] bg-primary-dark/10 blur-[100px] rounded-full animate-float pointer-events-none" />
 
-      {/* Content wrapper */}
-      <div className="relative z-10 h-full w-full">
-        {children}
-      </div>
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none" />
+
+      {/* Content */}
+      <div className="relative z-10 w-full">{children}</div>
     </div>
   );
 }
