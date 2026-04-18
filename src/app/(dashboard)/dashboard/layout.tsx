@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
@@ -33,6 +33,12 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const { profile, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Hydration Guard
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Reusable Navigation Component
   const Navigation = () => (
@@ -116,6 +122,8 @@ export default function DashboardLayout({
       </div>
     </>
   );
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col lg:flex-row font-sans">

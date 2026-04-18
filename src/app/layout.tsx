@@ -4,14 +4,20 @@ import { Providers } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 
+export const viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://linkmeup.app"),
   title: "LinkMeUp — One QR Code. All Your Socials. Forever.",
   description: "Connect your social media. Generate a permanent QR code. Share it anywhere. Update anytime — your QR never changes.",
   keywords: ["QR code", "social media", "link in bio", "LinkMeUp", "networking"],
   authors: [{ name: "LinkMeUp Team" }],
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
-  themeColor: "#000000",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

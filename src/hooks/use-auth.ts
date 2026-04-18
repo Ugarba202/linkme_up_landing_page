@@ -67,7 +67,7 @@ export function useAuth() {
     };
     
     // Set mock cookie for middleware bypass
-    document.cookie = "linkmeup-mock-session=true; path=/; max-age=3600";
+    document.cookie = "linkmeup-mock-session=true; path=/; max-age=3600; SameSite=Lax";
     
     setProfile(newProfile);
     setLoading(false);
@@ -107,7 +107,7 @@ export function useAuth() {
      };
 
      // Set mock cookie for middleware bypass
-     document.cookie = "linkmeup-mock-session=true; path=/; max-age=3600";
+     document.cookie = "linkmeup-mock-session=true; path=/; max-age=3600; SameSite=Lax";
 
      setProfile(mockProfile);
      setLoading(false);
@@ -118,7 +118,7 @@ export function useAuth() {
 
   const signOut = useCallback(async () => {
     // Clear mock cookie
-    document.cookie = "linkmeup-mock-session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = "linkmeup-mock-session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
     
     setUser(null);
     setProfile(null);
