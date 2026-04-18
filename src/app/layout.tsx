@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   description: "Connect your social media. Generate a permanent QR code. Share it anywhere. Update anytime — your QR never changes.",
   keywords: ["QR code", "social media", "link in bio", "LinkMeUp", "networking"],
   authors: [{ name: "LinkMeUp Team" }],
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0",
+  themeColor: "#000000",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "LinkMeUp",
+  },
   openGraph: {
     title: "LinkMeUp — One QR Code. All Your Socials. Forever.",
     description: "Connect your social media. Generate a permanent QR. Share it anywhere.",

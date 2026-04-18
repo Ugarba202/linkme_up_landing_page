@@ -9,7 +9,7 @@ import { NextResponse, type NextRequest } from "next/server";
  * - /dashboard/* → requires auth + profile_completed
  * - /setup → requires auth (but profile_completed can be false)
  * - /signup, /login → redirects to /dashboard if already authed + completed
- * - /, /u/*, /scan → public, no auth required
+ * - /, /u/* → public, no auth required
  */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
@@ -72,8 +72,7 @@ export async function updateSession(request: NextRequest) {
   // ─── Public routes — always accessible ────────────────────────────────
   const isPublicRoute =
     pathname === "/" ||
-    pathname.startsWith("/u/") ||
-    pathname === "/scan";
+    pathname.startsWith("/u/");
 
   if (isPublicRoute) {
     return response;

@@ -11,35 +11,106 @@ Compiler edge-server unexpectedly exited with code: null and signal: SIGTERM
    Linting and checking validity of types ...
    Collecting page data ...
    Generating static pages (0/13) ...
-TypeError: Cannot read properties of null (reading 'key')
-    at E (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/.next/server/app/setup/page.js:41:6191)
-    at nM (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47419)
-    at nN (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64674)
-    at nI (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46806)
-    at nM (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47570)
-    at nM (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61663)
-    at nN (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64674)
-    at nB (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67657)
-    at nF (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66824)
-    at nN (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64990)
-
-Error occurred prerendering page "/setup". Read more: https://nextjs.org/docs/messages/prerender-error
-
-TypeError: Cannot read properties of null (reading 'key')
-    at E (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/.next/server/app/setup/page.js:41:6191)
-    at nM (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47419)
-    at nN (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64674)
-    at nI (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:46806)
-    at nM (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:47570)
-    at nM (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:61663)
-    at nN (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64674)
-    at nB (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:67657)
-    at nF (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:66824)
-    at nN (/home/mobile_dev/Desktop/Flutter/LinkmeUp/linkmeup-next/node_modules/next/dist/compiled/next-server/app-page.runtime.prod.js:12:64990)
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard/socials. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard/socials. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /setup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /setup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /setup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /setup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard/qr. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard/qr. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard/qr. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard/qr. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard/profile. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard/profile. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard/profile. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard/profile. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard/socials. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard/socials. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /signup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /signup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /signup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /signup. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /dashboard. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /dashboard. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
    Generating static pages (3/13) 
    Generating static pages (6/13) 
+ ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /_not-found. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
    Generating static pages (9/13) 
+ ⚠ Unsupported metadata viewport is configured in metadata export in /login. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /login. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata viewport is configured in metadata export in /login. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ ⚠ Unsupported metadata themeColor is configured in metadata export in /login. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
  ✓ Generating static pages (13/13) 
+   Finalizing page optimization ...
+   Collecting build traces ...
 
-> Export encountered errors on following paths:
-	/setup/page: /setup
+Route (app)                              Size     First Load JS
+┌ ○ /                                    18.7 kB         183 kB
+├ ○ /_not-found                          0 B                0 B
+├ λ /auth/callback                       0 B                0 B
+├ ○ /dashboard                           4.92 kB         141 kB
+├ ○ /dashboard/profile                   16.1 kB         152 kB
+├ ○ /dashboard/qr                        11.1 kB         147 kB
+├ ○ /dashboard/socials                   10.2 kB         164 kB
+├ ○ /login                               3.33 kB         146 kB
+├ ○ /manifest.webmanifest                0 B                0 B
+├ ○ /setup                               9.59 kB         163 kB
+├ ○ /signup                              7.2 kB          150 kB
+└ λ /u/[username]                        5.58 kB         156 kB
++ First Load JS shared by all            84.6 kB
+  ├ chunks/69-727edae09825b74a.js        29.1 kB
+  ├ chunks/fd9d1056-dc88262f310bb895.js  53.6 kB
+  └ other shared chunks (total)          1.96 kB
+
+
+ƒ Middleware                             209 kB
+
+○  (Static)   prerendered as static content
+λ  (Dynamic)  server-rendered on demand using Node.js
+

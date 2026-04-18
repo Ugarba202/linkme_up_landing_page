@@ -11,8 +11,7 @@ import {
   BarChart, 
   Menu, 
   LogOut,
-  Sparkles,
-  Scan
+  Sparkles
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Home", icon: Home },
-  { href: "/scan", label: "Scan Pass", icon: Scan },
   { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/socials", label: "Social Links", icon: LinkIcon },
   { href: "/dashboard/qr", label: "My QR Code", icon: QrCode },

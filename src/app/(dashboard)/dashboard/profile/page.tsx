@@ -15,7 +15,8 @@ import {
   ArrowRight,
   ShieldCheck,
   Smartphone,
-  Globe
+  Globe,
+  Settings2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
@@ -107,134 +108,142 @@ export default function ProfileEditor() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-10 pb-20">
+    <div className="max-w-5xl mx-auto space-y-12 pb-20 relative">
       
+      {/* ─── AI-Premium Background Elements ─── */}
+      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-secondary/5 blur-[150px] rounded-full pointer-events-none -z-10" />
+
       {/* ─── Header ─── */}
-      <div className="text-center md:text-left">
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">
-           Digital <span className="text-primary">Identity</span>
+      <div className="flex flex-col gap-2">
+        <motion.div 
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2 text-primary font-black uppercase tracking-[0.3em] text-[10px]"
+        >
+          <Settings2 className="w-3 h-3" /> Identity Configuration
+        </motion.div>
+        <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-tight">
+           Profile <span className="text-primary">Essence</span>.
         </h1>
-        <p className="text-white/40 text-lg max-w-2xl font-medium">
-          Manage how the world sees you. Your identity is your most valuable asset.
-        </p>
       </div>
 
-      <div className="grid lg:grid-cols-[1fr,380px] gap-10 items-start">
+      <div className="grid lg:grid-cols-[1fr,380px] gap-12 items-start">
         
         {/* ─── Left: Form ─── */}
         <div className="space-y-8">
-          <Card className="bg-[#0F1021]/60 backdrop-blur-xl border-white/5 p-8 md:p-10 rounded-[40px] relative overflow-hidden">
+          <Card className="bg-white/[0.03] backdrop-blur-3xl border-white/5 p-8 md:p-12 rounded-[48px] relative overflow-hidden shadow-2xl">
             {/* Subtle Gradient Glow */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-primary/10 blur-[100px] pointer-events-none" />
+            <div className="absolute top-0 left-0 -translate-y-1/2 -translate-x-1/2 w-64 h-64 bg-primary/10 blur-[100px] pointer-events-none" />
             
-            <form onSubmit={handleSubmit(onSubmit)} className="relative z-10 space-y-10">
+            <form onSubmit={handleSubmit(onSubmit)} className="relative z-10 space-y-12">
               
               {/* Profile Header (Avatar Integration) */}
-              <div className="flex flex-col md:flex-row items-center gap-8 border-b border-white/5 pb-10">
+              <div className="flex flex-col md:flex-row items-center gap-10 border-b border-white/5 pb-12">
                 <div className="relative group">
-                  <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary via-secondary to-primary animate-gradient shadow-glow">
-                    <div className="w-full h-full rounded-full bg-[#050510] flex items-center justify-center overflow-hidden relative">
+                  <div className="w-36 h-36 rounded-[40px] p-1 bg-gradient-to-tr from-primary/50 to-secondary/50 shadow-2xl transition-transform duration-700 group-hover:scale-105">
+                    <div className="w-full h-full rounded-[36px] bg-[#050510] flex items-center justify-center overflow-hidden relative border border-white/5">
                        {isUploading ? (
-                        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center gap-2 z-20">
+                        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-3 z-20 backdrop-blur-sm">
                            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                           <span className="text-[10px] font-black uppercase text-white/50 tracking-widest">Optimizing</span>
+                           <span className="text-[10px] font-black uppercase text-white/50 tracking-widest">Processing</span>
                         </div>
                       ) : null}
                       
                       {profile.avatarUrl ? (
-                        <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                        <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-[34px]" />
                       ) : (
-                        <User className="w-12 h-12 text-white/10" />
+                        <User className="w-14 h-14 text-white/10" />
                       )}
                       
                       <button 
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                        className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center cursor-pointer gap-2 backdrop-blur-[2px]"
                       >
-                         <Camera className="w-8 h-8 text-white" />
+                         <Camera className="w-6 h-6 text-white" />
+                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">Replace</span>
                       </button>
                     </div>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-10 h-10 rounded-2xl bg-primary flex items-center justify-center border-4 border-[#050510] shadow-xl">
-                     <Sparkles className="w-5 h-5 text-white" />
+                  <div className="absolute -bottom-2 -right-2 w-12 h-12 rounded-2xl bg-primary flex items-center justify-center border-4 border-[#050510] shadow-2xl">
+                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
                 </div>
 
-                <div className="flex-1 text-center md:text-left space-y-2">
-                   <h3 className="text-2xl font-black tracking-tight">Profile Essence</h3>
-                   <p className="text-white/30 text-sm font-medium leading-relaxed max-w-[300px]">
-                     Upload a high-resolution photo. Recommended size: 1024x1024px.
+                <div className="flex-1 text-center md:text-left space-y-3">
+                   <h3 className="text-2xl font-black tracking-tight">Visual Identity</h3>
+                   <p className="text-white/30 text-xs font-bold leading-relaxed max-w-[280px]">
+                     Upload a high-fidelity signature image. This appears on your QR Pass and Public Profile.
                    </p>
                    <Button 
                     type="button"
                     variant="ghost" 
                     onClick={() => fileInputRef.current?.click()}
-                    className="text-primary hover:text-primary-light hover:bg-primary/10 font-bold h-auto p-0 text-xs uppercase tracking-widest"
+                    className="text-primary hover:text-primary-light hover:bg-primary/5 font-black h-auto p-0 text-[10px] uppercase tracking-widest"
                    >
-                     Update Picture <ArrowRight className="ml-2 w-3 h-3" />
+                     New Capture <ArrowRight className="ml-2 w-3 h-3" />
                    </Button>
                 </div>
               </div>
 
               {/* Input Fields */}
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-2 gap-10">
                 <div className="space-y-3">
-                   <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ml-1">
-                     <Type className="w-3 h-3" /> Display Name
+                   <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">
+                     <Type className="w-3 h-3" /> Full Identity
                    </label>
                    <Input 
                      {...register("fullName")}
-                     className="h-16 bg-white/[0.03] border-white/5 focus-visible:ring-primary rounded-[22px] px-6 text-lg font-bold" 
-                     placeholder="John Doe"
+                     className="h-16 bg-white/[0.04] border-white/5 focus-visible:ring-primary rounded-[22px] px-6 text-base font-bold transition-all" 
+                     placeholder="Digital Entity"
                    />
                 </div>
                 <div className="space-y-3">
-                   <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ml-1">
+                   <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">
                      <AtSign className="w-3 h-3" /> Unique Handle
                    </label>
                    <div className="relative">
-                      <span className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 text-sm font-black uppercase tracking-widest pointer-events-none">
+                      <span className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/40 text-sm font-black uppercase tracking-widest pointer-events-none">
                         u/
                       </span>
                       <Input 
                         {...register("username")}
-                        className="pl-12 h-16 bg-white/[0.03] border-white/5 focus-visible:ring-primary rounded-[22px] px-6 text-lg font-bold" 
-                        placeholder="username"
+                        className="pl-12 h-16 bg-white/[0.04] border-white/5 focus-visible:ring-primary rounded-[22px] px-6 text-base font-bold transition-all" 
+                        placeholder="handle"
                       />
                    </div>
                 </div>
               </div>
 
               <div className="space-y-3">
-                 <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 ml-1">
-                   <FileText className="w-3 h-3" /> Public Biography
+                 <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 ml-2">
+                   <FileText className="w-3 h-3" /> Public Bio
                  </label>
                  <textarea 
                    {...register("bio")}
-                   className="w-full min-h-[160px] bg-white/[0.03] border border-white/5 focus:ring-2 focus:ring-primary rounded-[32px] px-6 py-5 text-base font-medium leading-relaxed text-white placeholder:text-white/10 outline-none transition-all"
-                   placeholder="Describe your essence in a few words..."
+                   className="w-full min-h-[160px] bg-white/[0.04] border border-white/5 focus:ring-2 focus:ring-primary rounded-[32px] px-6 py-6 text-sm font-bold leading-relaxed text-white placeholder:text-white/10 outline-none transition-all"
+                   placeholder="Describe your essence in the digital space..."
                  />
               </div>
 
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-6 ">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-8 ">
                  {errorMsg && (
-                    <p className="text-red-500 font-bold text-sm bg-red-500/10 px-4 py-2 rounded-xl flex items-center gap-2">
+                    <p className="text-red-500 font-bold text-[10px] uppercase tracking-widest bg-red-500/10 px-6 py-3 rounded-2xl flex items-center gap-3">
                       <ShieldCheck className="w-4 h-4" /> {errorMsg}
                     </p>
                  )}
                  <div className="flex-1" />
                  
-                 <div className="flex items-center gap-6">
+                 <div className="flex items-center gap-8">
                     <AnimatePresence>
                       {saveSuccess && (
                         <motion.span 
                           initial={{ opacity: 0, x: 10 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0 }}
-                          className="flex items-center gap-3 text-green-500 font-black text-[10px] uppercase tracking-widest"
+                          className="flex items-center gap-3 text-green-500 font-black text-[10px] uppercase tracking-[0.4em]"
                         >
-                           <CheckCircle className="w-4 h-4" /> Sync Successful
+                           <CheckCircle className="w-4 h-4" /> Sync Ready
                         </motion.span>
                       )}
                     </AnimatePresence>
@@ -242,9 +251,9 @@ export default function ProfileEditor() {
                     <Button 
                       type="submit"
                       disabled={isSaving}
-                      className="h-16 px-12 bg-primary hover:brightness-110 font-black uppercase tracking-widest text-sm rounded-[24px] shadow-glow min-w-[200px]"
+                      className="h-16 px-14 bg-white text-black hover:bg-white/90 font-black uppercase tracking-[0.2em] text-[10px] rounded-[24px] shadow-glow-sm min-w-[200px] active:scale-[0.98] transition-all"
                     >
-                      {isSaving ? <Loader2 className="w-6 h-6 animate-spin" /> : "Save Changes"}
+                      {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : "Authorize Sync"}
                     </Button>
                  </div>
               </div>
@@ -254,42 +263,44 @@ export default function ProfileEditor() {
         </div>
 
         {/* ─── Right: Side Info ─── */}
-        <div className="space-y-8">
-           <Card className="p-8 bg-gradient-to-br from-white/[0.04] to-transparent border-white/5 rounded-[40px]">
-              <h4 className="text-lg font-black mb-4 flex items-center gap-2">
-                 <ShieldCheck className="w-5 h-5 text-primary" /> Privacy Control
+        <div className="space-y-10">
+           <Card className="p-10 bg-gradient-to-br from-white/[0.02] to-transparent border-white/5 rounded-[48px] relative overflow-hidden group">
+              <div className="absolute -right-20 -bottom-20 w-48 h-48 bg-primary/10 blur-[60px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-all duration-1000" />
+              <h4 className="text-base font-black mb-4 flex items-center gap-3">
+                 <ShieldCheck className="w-4 h-4 text-primary" /> Authority Control
               </h4>
-              <p className="text-white/40 text-sm font-medium leading-relaxed mb-8">
-                Your profile is currently <span className="text-white">Public</span>. Anyone with your link or QR code can view your active connections.
+              <p className="text-white/30 text-xs font-bold leading-relaxed mb-10">
+                Your profile is broadcast as <span className="text-white">Public</span>. Anyone accessing your token can view your digital pass.
               </p>
               
               <div className="space-y-4">
-                 <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
-                    <div className="flex items-center gap-3">
-                       <Globe className="w-4 h-4 text-white/30" />
-                       <span className="text-xs font-bold">Search Visibility</span>
+                 <div className="flex items-center justify-between p-5 bg-white/[0.03] rounded-2xl border border-white/5 group hover:bg-white/5 transition-all">
+                    <div className="flex items-center gap-4">
+                       <Globe className="w-4 h-4 text-white/20 group-hover:text-primary transition-colors" />
+                       <span className="text-[10px] font-black uppercase tracking-widest leading-none">Global Index</span>
                     </div>
                     <div className="w-10 h-5 bg-primary/20 rounded-full relative">
-                       <div className="absolute right-1 top-1 w-3 h-3 bg-primary rounded-full" />
+                       <div className="absolute right-1 top-1 w-3 h-3 bg-primary rounded-full shadow-glow-sm" />
                     </div>
                  </div>
-                 <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5">
-                    <div className="flex items-center gap-3">
-                       <Smartphone className="w-4 h-4 text-white/30" />
-                       <span className="text-xs font-bold">Show App Badge</span>
+                 <div className="flex items-center justify-between p-5 bg-white/[0.03] rounded-2xl border border-white/5 group hover:bg-white/5 transition-all">
+                    <div className="flex items-center gap-4">
+                       <Smartphone className="w-4 h-4 text-white/20 group-hover:text-secondary transition-colors" />
+                       <span className="text-[10px] font-black uppercase tracking-widest leading-none">Discovery Badge</span>
                     </div>
-                    <div className="w-10 h-5 bg-primary/20 rounded-full relative">
-                       <div className="absolute right-1 top-1 w-3 h-3 bg-primary rounded-full" />
+                    <div className="w-10 h-5 bg-secondary/20 rounded-full relative">
+                       <div className="absolute right-1 top-1 w-3 h-3 bg-secondary rounded-full shadow-glow-sm" />
                     </div>
                  </div>
               </div>
            </Card>
 
-           <div className="p-8 rounded-[40px] bg-primary/5 border border-primary/20 border-dashed text-center">
-              <Sparkles className="w-8 h-8 text-primary mx-auto mb-4" />
-              <h4 className="text-base font-black mb-2">Build Your Brand</h4>
-              <p className="text-[11px] text-white/30 font-bold leading-relaxed">
-                Consistency is key. Use the same Display Name across all social platforms to make it easier for people to find you.
+           <div className="p-10 rounded-[48px] bg-primary/5 border border-primary/20 border-dashed text-center relative overflow-hidden group">
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Sparkles className="w-8 h-8 text-primary mx-auto mb-6 group-hover:animate-pulse" />
+              <h4 className="text-sm font-black mb-2 uppercase tracking-widest">Growth Matrix</h4>
+              <p className="text-[10px] text-white/20 font-bold leading-relaxed">
+                Consistency is key. Maintain a synchronized identity across all platforms to optimize your digital discovery.
               </p>
            </div>
         </div>
