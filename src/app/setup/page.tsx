@@ -129,8 +129,17 @@ export default function SetupWizardPage() {
     const isOther = dialogPlatform.key === "other";
     
     setConnectedSocials((prev) => {
-      // Remove any existing one for this platform
-      const filtered = prev.filter((s) => s.platform !== dialogPlatform.key);
+      // If it's a standard platform, remove any existing one for that platform to avoid duplicates
+      // If it's "other", we allow multiple different custom links (distinguished by their URL)
+      const isOther = dialogPlatform.key === "other";
+      
+      const filtered = prev.filter((s) => {
+        if (isOther) {
+          // For custom links, we only replace if the URL or name is exactly the same
+          return s.platform !== "other" || (s.url !== dialogUsername.trim() && s.username !== (customName || "Custom"));
+        }
+        return s.platform !== dialogPlatform.key;
+      });
       
       const newEntry: ConnectedSocial = {
         platform: dialogPlatform.key,
@@ -395,7 +404,37 @@ function SocialsStep({
           );
         })}
 
-        {/* Custom Link Button */}
+        {/* Custom Links Display */}
+        {connectedSocials
+          .filter((s) => s.platform === "other")
+          .map((social, index) => (
+            <motion.button
+              key={`custom-${index}`}
+              onClick={() => onAddClick(otherPlatform)}
+              className="w-full flex items-center gap-4 p-5 rounded-2xl border border-primary/30 bg-primary/5 transition-all text-left group"
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+            >
+              <div
+                className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10"
+              >
+                <otherPlatform.icon
+                  className="w-6 h-6 text-primary"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-base">{social.username}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-primary truncate">
+                  {social.url}
+                </p>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/50">
+                <Check className="w-4 h-4 text-green-500" />
+              </div>
+            </motion.button>
+          ))}
+
+        {/* Add Custom Link Button */}
         <motion.button
           onClick={() => onAddClick(otherPlatform)}
           className="w-full flex items-center gap-4 p-5 rounded-2xl border border-dashed border-white/20 bg-transparent hover:border-primary/50 hover:bg-primary/5 transition-all text-left group mt-4"
