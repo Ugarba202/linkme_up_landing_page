@@ -24,6 +24,23 @@ export async function updateSession(request: NextRequest) {
   const hasMockSession = request.cookies.has("linkmeup-mock-session");
   const pathname = request.nextUrl.pathname;
 
+  // ─── Configuration Guard ────────────────────────────────────────────────
+  // Check if Supabase is properly configured. If not, enter "Safe Mode" 
+  // to prevent crashing the entire site on Vercel.
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  const isConfigured = supabaseUrl && 
+                       supabaseAnonKey && 
+                       !supabaseUrl.includes("placeholder") && 
+                       supabaseUrl.startsWith("https://");
+
+  if (!isConfigured && !hasMockSession) {
+    // In "Safe Mode", we allow public routes but avoid crashing on auth logic
+    return response;
+  }
+
+  // If in Mock Mode, we've already handled the bypass above.
   if (hasMockSession) {
     // If authed in mock mode, prevent visiting login/signup
     if (pathname.startsWith("/login") || pathname.startsWith("/signup")) {
@@ -34,108 +51,115 @@ export async function updateSession(request: NextRequest) {
     return response;
   }
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
+  try {
+    const supabase = createServerClient(
+      supabaseUrl!,
+      supabaseAnonKey!,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value;
+          },
+          set(name: string, value: string, options: CookieOptions) {
+            request.cookies.set({ name, value, ...options });
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            });
+            response.cookies.set({ name, value, ...options });
+          },
+          remove(name: string, options: CookieOptions) {
+            request.cookies.set({ name, value: "", ...options });
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            });
+            response.cookies.set({ name, value: "", ...options });
+          },
         },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({ name, value, ...options });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({ name, value, ...options });
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({ name, value: "", ...options });
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          response.cookies.set({ name, value: "", ...options });
-        },
-      },
+      }
+    );
+
+    // Refresh the session
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    // ─── Public routes — always accessible ────────────────────────────────
+    const isPublicRoute =
+      pathname === "/" ||
+      pathname.startsWith("/u/");
+
+    if (isPublicRoute) {
+      return response;
     }
-  );
 
-  // Refresh the session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    // ─── Protected: Dashboard routes ──────────────────────────────────────
+    const isDashboardRoute = pathname.startsWith("/dashboard");
 
-  // ─── Public routes — always accessible ────────────────────────────────
-  const isPublicRoute =
-    pathname === "/" ||
-    pathname.startsWith("/u/");
+    // ─── Auth routes (login/signup) ───────────────────────────────────────
+    const isAuthRoute =
+      pathname.startsWith("/login") || pathname.startsWith("/signup");
 
-  if (isPublicRoute) {
-    return response;
-  }
+    // ─── Setup route ──────────────────────────────────────────────────────
+    const isSetupRoute = pathname.startsWith("/setup");
 
-  // ─── Protected: Dashboard routes ──────────────────────────────────────
-  const isDashboardRoute = pathname.startsWith("/dashboard");
+    if (!user) {
+      // Not authenticated
+      if (isDashboardRoute || isSetupRoute) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        url.searchParams.set("redirect", pathname);
+        return NextResponse.redirect(url);
+      }
+      return response;
+    }
 
-  // ─── Auth routes (login/signup) ───────────────────────────────────────
-  const isAuthRoute =
-    pathname.startsWith("/login") || pathname.startsWith("/signup");
+    // ─── User IS authenticated from here ──────────────────────────────────
 
-  // ─── Setup route ──────────────────────────────────────────────────────
-  const isSetupRoute = pathname.startsWith("/setup");
+    // Check profile completion status
+    let profileCompleted = false;
+    try {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("profile_completed")
+        .eq("id", user.id)
+        .maybeSingle();
 
-  if (!user) {
-    // Not authenticated
-    if (isDashboardRoute || isSetupRoute) {
+      profileCompleted = profile?.profile_completed ?? false;
+    } catch {
+      // If profile fetch fails, default to incomplete
+      profileCompleted = false;
+    }
+
+    if (isAuthRoute) {
+      // Already authenticated → redirect based on profile status
       const url = request.nextUrl.clone();
-      url.pathname = "/login";
-      url.searchParams.set("redirect", pathname);
+      url.pathname = profileCompleted ? "/dashboard" : "/setup";
       return NextResponse.redirect(url);
     }
+
+    if (isDashboardRoute && !profileCompleted) {
+      // Profile not completed → force setup wizard (matches mobile app behavior)
+      const url = request.nextUrl.clone();
+      url.pathname = "/setup";
+      return NextResponse.redirect(url);
+    }
+
+    if (isSetupRoute && profileCompleted) {
+      // Profile already completed → redirect to dashboard
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+
+    return response;
+  } catch (error) {
+    // If anything fails in the auth logic, we fall back to Safe Mode 
+    // to prevent crashing the entire site.
+    console.error("Middleware Error:", error);
     return response;
   }
-
-  // ─── User IS authenticated from here ──────────────────────────────────
-
-  // Check profile completion status
-  let profileCompleted = false;
-  try {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("profile_completed")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    profileCompleted = profile?.profile_completed ?? false;
-  } catch {
-    // If profile fetch fails, default to incomplete
-    profileCompleted = false;
-  }
-
-  if (isAuthRoute) {
-    // Already authenticated → redirect based on profile status
-    const url = request.nextUrl.clone();
-    url.pathname = profileCompleted ? "/dashboard" : "/setup";
-    return NextResponse.redirect(url);
-  }
-
-  if (isDashboardRoute && !profileCompleted) {
-    // Profile not completed → force setup wizard (matches mobile app behavior)
-    const url = request.nextUrl.clone();
-    url.pathname = "/setup";
-    return NextResponse.redirect(url);
-  }
-
-  if (isSetupRoute && profileCompleted) {
-    // Profile already completed → redirect to dashboard
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
-  }
-
-  return response;
 }
