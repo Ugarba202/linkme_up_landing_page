@@ -84,9 +84,7 @@ export function Footer() {
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2 mb-4 group">
-                <div className="w-8 h-8 rounded-lg overflow-hidden relative border border-white/10 group-hover:border-primary/50 transition-colors">
-                  <img src="/images/logo.png" alt="" className="w-[140%] h-[140%] object-cover absolute top-[-20%] left-[-20%]" />
-                </div>
+                
                 <span className="text-xl font-black tracking-tighter text-gradient">LinkMeUp</span>
               </div>
               <p className="text-sm text-[#555566] leading-relaxed max-w-xs">
@@ -113,10 +111,7 @@ export function Footer() {
           {/* Newsletter */}
           <div className="border-t border-white/5 pt-8 mb-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h4 className="font-semibold text-sm mb-1">Stay in the loop</h4>
-                <p className="text-xs text-[#555566]">Product updates and tips. No spam.</p>
-              </div>
+              
               <div className="flex gap-2 w-full md:w-auto">
                 <Input
                   placeholder="you@email.com"

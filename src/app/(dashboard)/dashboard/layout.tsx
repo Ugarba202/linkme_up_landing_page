@@ -22,7 +22,6 @@ const NAV_ITEMS = [
   { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/socials", label: "Social Links", icon: LinkIcon },
   { href: "/dashboard/qr", label: "My QR Code", icon: QrCode },
-  { href: "/dashboard/analytics", label: "Analytics", icon: BarChart },
 ];
 
 export default function DashboardLayout({
@@ -106,10 +105,10 @@ export default function DashboardLayout({
 
         {/* Upgrade & Logout */}
         <div className="space-y-2">
-          <Button variant="outline" className="w-full h-12 justify-start border-primary/20 text-primary hover:bg-primary/10 transition-colors font-black uppercase tracking-[0.2em] text-[9px] px-4 rounded-xl">
+          {/* <Button variant="outline" className="w-full h-12 justify-start border-primary/20 text-primary hover:bg-primary/10 transition-colors font-black uppercase tracking-[0.2em] text-[9px] px-4 rounded-xl">
             <Sparkles className="w-3.5 h-3.5 mr-2" />
             Upgrade to Pro
-          </Button>
+          </Button> */}
           <Button 
             variant="ghost" 
             onClick={() => signOut()}

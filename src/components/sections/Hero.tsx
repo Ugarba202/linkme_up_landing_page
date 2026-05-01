@@ -85,12 +85,12 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl">
+            {/* <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl">
               <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               <span className="text-[11px] font-semibold text-white/50 tracking-wide">
                 We will be launching LinkMeUp soon
               </span>
-            </div>
+            </div> */}
           </motion.div>
 
           {/* Main Headline */}
@@ -137,24 +137,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="w-full max-w-lg mb-6"
           >
-            <div className="flex items-center gap-0 bg-white/[0.04] border border-white/10 rounded-full p-1.5 pl-6 backdrop-blur-xl hover:border-white/20 transition-colors focus-within:border-primary/40 focus-within:shadow-glow-sm">
-              <span className="text-sm text-white/25 font-medium flex-shrink-0">linkmeup.app/</span>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""))}
-                placeholder="yourname"
-                className="flex-1 bg-transparent text-sm text-white font-semibold outline-none placeholder:text-white/15 min-w-0"
-              />
-              <MagneticButton>
-                <Link href={`/signup${username ? `?u=${username}` : ""}`}>
-                  <Button className="rounded-full px-6 h-10 text-sm font-bold bg-primary hover:bg-primary-dark shadow-glow transition-all whitespace-nowrap">
-                    Claim Your Link
-                    <ArrowRight className="ml-2 w-3.5 h-3.5" />
-                  </Button>
-                </Link>
-              </MagneticButton>
-            </div>
+           
           </motion.div>
 
           {/* Secondary CTA */}

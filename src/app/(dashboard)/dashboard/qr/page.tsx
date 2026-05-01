@@ -90,7 +90,7 @@ export default function QRPage() {
 
         </motion.div>
         <h1 className="text-2xl md:text-3xl font-black tracking-tighter leading-tight">
-          Your <span className="text-secondary">Digital</span> Identity Pass.
+          
         </h1>
       </div>
 
@@ -115,9 +115,9 @@ export default function QRPage() {
           </motion.div>
 
           <div className="text-center relative z-10 w-full flex flex-col items-center space-y-2 px-4">
-            <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white/90">
+            {/* <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white/90">
               Here is your code <span className="text-secondary">!!</span>
-            </h3>
+            </h3> */}
             <p className="text-xs md:text-sm font-bold text-white/40 leading-relaxed max-w-[280px]">
               Scan this unique QR Code to view my full digital identity.
             </p>
@@ -145,7 +145,7 @@ export default function QRPage() {
         {/* ─── Secondary Info & Options ─── */}
         <div className="w-full max-w-sm space-y-10">
           {/* Mobile Awareness Card */}
-          <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-4">
+          {/* <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
               <ShieldCheck className="w-4 h-4 text-secondary" />
             </div>
@@ -155,7 +155,7 @@ export default function QRPage() {
                 This QR code encodes your permanent user ID. Update your links anytime—your printed QR will **never** need to be changed.
               </p>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col items-center text-center space-y-4">
             <div className="w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-primary to-secondary shadow-2xl">

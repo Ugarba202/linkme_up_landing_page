@@ -105,21 +105,27 @@ export default function SignupPage() {
     setIsLoading(true);
     setSubmitError(null);
 
-    const cleanUsername = username.toLowerCase().trim();
-    // Supabase requires an email, so we generate a deterministic backend email
-    const backendEmail = `${cleanUsername}@linkmeup.app`;
+    const formData = new FormData();
+    formData.append("username", username.trim());
+    formData.append("fullName", fullName.trim());
+    formData.append("bio", bio.trim());
+    formData.append("password", password);
+    // Note: We'll handle avatar upload in a subsequent step or directly in the setup wizard
 
     try {
-      await signUp(
-        backendEmail, 
-        password, 
-        cleanUsername, 
-        fullName.trim(), 
-        bio.trim(), 
-        avatarPreview || ""
-      );
+      const { registerUser } = await import("@/app/actions/auth");
+      const result = await registerUser(formData);
+      
+      if (result.error) {
+        setSubmitError(result.error);
+        setIsLoading(false);
+      } else {
+        // Success! The server action revalidates the path.
+        // We can redirect the user to the dashboard or setup page.
+        window.location.href = "/dashboard";
+      }
     } catch (err: any) {
-      setSubmitError(err.message || "Something went wrong. Please try again.");
+      setSubmitError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
   };

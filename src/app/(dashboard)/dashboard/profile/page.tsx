@@ -261,7 +261,7 @@ export default function ProfileEditor() {
 
         {/* ─── Right: Side Info ─── */}
         <div className="space-y-8">
-           <Card className="p-6 bg-gradient-to-br from-white/[0.02] to-transparent border-white/5 rounded-3xl relative overflow-hidden group">
+           {/* <Card className="p-6 bg-gradient-to-br from-white/[0.02] to-transparent border-white/5 rounded-3xl relative overflow-hidden group">
               <div className="absolute -right-20 -bottom-20 w-48 h-48 bg-primary/10 blur-[60px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-all duration-1000" />
               <h4 className="text-base font-black mb-4 flex items-center gap-3">
                  <ShieldCheck className="w-4 h-4 text-primary" /> Authority Control
@@ -290,16 +290,16 @@ export default function ProfileEditor() {
                     </div>
                  </div>
               </div>
-           </Card>
+           </Card> */}
 
-           <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 border-dashed text-center relative overflow-hidden group">
+           {/* <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 border-dashed text-center relative overflow-hidden group">
               <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               <Sparkles className="w-6 h-6 text-primary mx-auto mb-4 group-hover:animate-pulse" />
               <h4 className="text-xs font-black mb-2 uppercase tracking-widest">Growth Matrix</h4>
               <p className="text-[9px] text-white/20 font-bold leading-relaxed">
                 Consistency is key. Maintain a synchronized identity across all platforms to optimize your digital discovery.
               </p>
-           </div>
+           </div> */}
         </div>
 
       </div>

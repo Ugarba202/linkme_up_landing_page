@@ -291,24 +291,7 @@ export default function SocialLinksManager() {
         </AnimatePresence>
       </div>
 
-      {/* ─── Tips / Promotion Section ─── */}
-      <Card className="p-6 bg-gradient-to-br from-white/[0.03] to-transparent border-white/5 rounded-3xl overflow-hidden relative group">
-         <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-primary/20 transition-all duration-1000" />
-         <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-            <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 shadow-2xl">
-               <Sparkles className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex-1 text-center md:text-left">
-               <h4 className="text-lg font-black mb-1">Amplify Engagement</h4>
-               <p className="text-white/30 text-xs font-medium leading-relaxed">
-                 Profiles with integrated social signatures see a 40% higher conversion rate. Keep your links updated to maintain peak performance.
-               </p>
-            </div>
-            <Button variant="outline" className="h-12 px-6 border-white/10 bg-white/5 rounded-xl font-black uppercase tracking-widest text-[9px] active:scale-95 transition-all">
-               Analyze Traffic <ChevronRight className="ml-2 w-3 h-3" />
-            </Button>
-         </div>
-      </Card>
+     
 
       {/* ─── Add Link Dialog ─── */}
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>

@@ -24,18 +24,22 @@ export default function LoginPage() {
     setIsLoading(true);
     setError(null);
 
-    const cleanUsername = username.toLowerCase().trim();
-    const backendEmail = `${cleanUsername}@linkmeup.app`;
+    const formData = new FormData();
+    formData.append("username", username.trim());
+    formData.append("password", password);
 
     try {
-      await signIn(backendEmail, password);
-      // Wait a tick for auth store to populate profile before routing
-      // Middleware normally handles this, but client-side redirect helps feel instantaneous
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 500);
+      const { loginUser } = await import("@/app/actions/auth");
+      const result = await loginUser(formData);
+      
+      if (result.error) {
+        setError(result.error);
+        setIsLoading(false);
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (err: any) {
-      setError(err.message || "Invalid login credentials.");
+      setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
   };
