@@ -3,7 +3,7 @@
  * These map to the database rows but use camelCase for TS ergonomics.
  */
 
-import type { ProfileRow, SocialLinkRow } from "./database";
+import type { ProfileRow, SocialLinkRow, Database } from "./database";
 
 // ─── Social Platform Enum ────────────────────────────────────────────────────
 // Must match the Flutter SocialPlatform enum exactly (lowercase names)
@@ -102,8 +102,8 @@ export function socialLinkFromRow(row: SocialLinkRow): SocialLink {
   };
 }
 
-export function profileToUpdate(profile: Partial<Profile>) {
-  const update: Record<string, unknown> = {};
+export function profileToUpdate(profile: Partial<Profile>): Database["public"]["Tables"]["profiles"]["Update"] {
+  const update: Database["public"]["Tables"]["profiles"]["Update"] = {};
   if (profile.fullName !== undefined) update.full_name = profile.fullName;
   if (profile.username !== undefined) update.username = profile.username;
   if (profile.country !== undefined) update.country = profile.country;

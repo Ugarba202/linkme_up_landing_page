@@ -14,20 +14,75 @@ export function useAuth() {
   const { profile, setProfile, setLoading, loading, initialized, setInitialized } = useAuthStore();
   const [user, setUser] = useState<{ id: string } | null>(null);
 
-  // Mock Initialization
+  // Real Initialization
   useEffect(() => {
-    // If a profile exists in persistent storage, sync the user object
-    if (profile && !user) {
-      setUser({ id: profile.id });
-    }
+    const initAuth = async () => {
+      // ─── Demo Mode Check ──────────────────────────────────────────────────
+      const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+      
+      if (isDemoMode && !profile) {
+        const mockProfile: Profile = {
+          id: "demo-user-id",
+          username: "ugarba202",
+          fullName: "Usman Umar Garba",
+          bio: "Senior Software Engineer | LinkMeUp Team Lead",
+          avatarUrl: "https://github.com/ugarba202.png",
+          profileCompleted: true,
+          socialLinks: [
+            { id: "1", platform: "instagram", username: "ugarba202", url: "https://instagram.com/ugarba202", is_visible: true, sort_order: 0, created_at: new Date().toISOString(), user_id: "demo-user-id" },
+            { id: "2", platform: "twitter", username: "ugarba202", url: "https://twitter.com/ugarba202", is_visible: true, sort_order: 1, created_at: new Date().toISOString(), user_id: "demo-user-id" },
+            { id: "3", platform: "linkedin", username: "ugarba202", url: "https://linkedin.com/in/ugarba202", is_visible: true, sort_order: 2, created_at: new Date().toISOString(), user_id: "demo-user-id" }
+          ] as any,
+          views: 1245,
+          clicks: 450,
+          createdAt: new Date(),
+          country: "Nigeria",
+          bannerUrl: "",
+          publicUrl: "https://linkmeup.app/u/ugarba202",
+          email: "ugarba202@linkmeup.app",
+          phoneNumber: "+2348000000000",
+          isQrGenerated: true,
+          qrGeneratedAt: new Date()
+        };
+        
+        setProfile(mockProfile);
+        setLoading(false);
+        setInitialized(true);
+        return;
+      }
 
-    const timer = setTimeout(() => {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        setUser({ id: session.user.id });
+        
+        // Fetch profile
+        const { data: profileRow } = await (supabase.from("profiles") as any)
+          .select("*")
+          .eq("id", session.user.id)
+          .maybeSingle();
+          
+        if (profileRow) {
+          const { data: linkRows } = await supabase
+            .from("social_links")
+            .select("*")
+            .eq("user_id", profileRow.id)
+            .order("sort_order", { ascending: true });
+
+          const { profileFromRow } = await import("@/types/profile");
+          setProfile(profileFromRow(profileRow, linkRows || []));
+        }
+      }
+
       setLoading(false);
       setInitialized(true);
-    }, 500);
+    };
 
-    return () => clearTimeout(timer);
-  }, [profile, user, setLoading, setInitialized]);
+    initAuth();
+  }, [setLoading, setInitialized, setProfile, profile]);
 
   const signUp = useCallback(async (
     email: string, 

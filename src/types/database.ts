@@ -1,11 +1,7 @@
 /**
  * Supabase Database Types
  * 
- * IMPORTANT: These types MUST match the exact column names used by the
- * Flutter mobile app's toMap()/fromMap() methods. Both apps share the
- * same Supabase database.
- * 
- * Source of truth: linkmeup_app/lib/domain/entities/
+ * Using a Type Alias for better recursive resolution and compatibility.
  */
 
 export type Json =
@@ -16,27 +12,42 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       profiles: {
         Row: ProfileRow;
         Insert: ProfileInsert;
         Update: ProfileUpdate;
+        Relationships: [];
       };
       social_links: {
         Row: SocialLinkRow;
         Insert: SocialLinkInsert;
         Update: SocialLinkUpdate;
+        Relationships: [];
       };
       analytics: {
         Row: AnalyticsRow;
         Insert: AnalyticsInsert;
         Update: never;
+        Relationships: [];
       };
     };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
   };
-}
+};
 
 // ─── Profiles ────────────────────────────────────────────────────────────────
 

@@ -96,25 +96,50 @@ export default function SocialLinksManager() {
   };
 
   const handleToggleVisibility = async (link: SocialLink) => {
-    const updatedLinks = links.map(l => l.id === link.id ? { ...l, isVisible: !l.isVisible } : l);
-    setLinks(updatedLinks);
-    updateSocialLinks(updatedLinks);
+    try {
+      const { toggleSocialVisibility } = await import("@/app/actions/socials");
+      const result = await toggleSocialVisibility(link.id, !link.isVisible);
+      if (result.error) throw new Error(result.error);
+      
+      const updatedLinks = links.map(l => l.id === link.id ? { ...l, isVisible: !l.isVisible } : l);
+      setLinks(updatedLinks);
+      updateSocialLinks(updatedLinks);
+    } catch (err: any) {
+      console.error("Failed to toggle visibility:", err.message);
+    }
   };
 
   const handleDelete = async (id: string) => {
-    const updatedLinks = links.filter(l => l.id !== id);
-    setLinks(updatedLinks);
-    updateSocialLinks(updatedLinks);
+    try {
+      const { deleteSocialLink } = await import("@/app/actions/socials");
+      const result = await deleteSocialLink(id);
+      if (result.error) throw new Error(result.error);
+
+      const updatedLinks = links.filter(l => l.id !== id);
+      setLinks(updatedLinks);
+      updateSocialLinks(updatedLinks);
+    } catch (err: any) {
+      console.error("Failed to delete link:", err.message);
+    }
   };
 
-  const handleReorder = (newOrder: SocialLink[]) => {
-    // Update sortOrder based on new index
-    const updatedLinks = newOrder.map((link, index) => ({
-      ...link,
-      sortOrder: index,
-    }));
-    setLinks(updatedLinks);
-    updateSocialLinks(updatedLinks);
+  const handleReorder = async (newOrder: SocialLink[]) => {
+    try {
+      // Update local state first for responsiveness
+      const updatedLinks = newOrder.map((link, index) => ({
+        ...link,
+        sortOrder: index,
+      }));
+      setLinks(updatedLinks);
+      
+      const { updateSocialLinkOrder } = await import("@/app/actions/socials");
+      const result = await updateSocialLinkOrder(updatedLinks.map(l => l.id));
+      if (result.error) throw new Error(result.error);
+      
+      updateSocialLinks(updatedLinks);
+    } catch (err: any) {
+      console.error("Failed to reorder links:", err.message);
+    }
   };
 
   const handleAddLink = async () => {
@@ -134,27 +159,37 @@ export default function SocialLinksManager() {
 
     setIsAdding(true);
 
-    const isOther = selectedPlatform === "other";
-    const mapped: SocialLink = {
-      id: Math.random().toString(36).substring(7),
-      userId: user.id,
-      platform: isOther ? "other" : selectedPlatform,
-      username: isOther ? (customName || "Custom") : newUsername.trim(),
-      url: isOther ? finalUrl : constructUrl(selectedPlatform as SocialPlatform, newUsername.trim()),
-      isVisible: true,
-      sortOrder: links.length,
-      createdAt: new Date()
-    };
+    try {
+      const isOther = selectedPlatform === "other";
+      const platform = isOther ? "other" : selectedPlatform;
+      const username = isOther ? (customName || "Custom") : newUsername.trim();
+      const url = isOther ? finalUrl : constructUrl(selectedPlatform as SocialPlatform, newUsername.trim());
+      
+      const formData = new FormData();
+      formData.append("platform", platform);
+      formData.append("username", username);
+      formData.append("url", url);
+      formData.append("sort_order", links.length.toString());
 
-    const updatedLinks = [...links, mapped];
-    setLinks(updatedLinks);
-    updateSocialLinks(updatedLinks);
-    
-    setAddDialogOpen(false);
-    setNewUsername("");
-    setCustomName("");
-    setSelectedPlatform(null);
-    setIsAdding(false);
+      const { addSocialLink } = await import("@/app/actions/socials");
+      const result = await addSocialLink(formData);
+      
+      if (result.error) throw new Error(result.error);
+
+      // In a real app, we might want to fetch the created link to get its real ID
+      // but since the server revalidates, the page should refresh with fresh data.
+      // For now, let's trigger a full refresh to get the real Supabase ID.
+      window.location.reload();
+      
+      setAddDialogOpen(false);
+      setNewUsername("");
+      setCustomName("");
+      setSelectedPlatform(null);
+    } catch (err: any) {
+      setUrlError(err.message || "Failed to add link.");
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const availablePlatforms = Object.values(PLATFORMS);

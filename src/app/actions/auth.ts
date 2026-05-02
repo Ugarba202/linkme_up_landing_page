@@ -21,7 +21,7 @@ export async function registerUser(formData: FormData) {
 
   // Format username to be safe (lowercase, alphanumeric + underscores only)
   const safeUsername = username.toLowerCase().replace(/[^a-z0-9_]/g, "");
-  const mockEmail = `${safeUsername}@linkmeup.local`;
+  const mockEmail = `${safeUsername}@linkmeup.app`;
 
   const supabase = createClient();
 
@@ -58,8 +58,7 @@ export async function registerUser(formData: FormData) {
   }
 
   // 3. Insert into public.profiles table
-  const { error: profileError } = await supabase
-    .from("profiles")
+  const { error: profileError } = await (supabase.from("profiles") as any)
     .insert({
       id: authData.user.id,
       username: safeUsername,
@@ -93,7 +92,7 @@ export async function loginUser(formData: FormData) {
   }
 
   const safeUsername = username.toLowerCase().replace(/[^a-z0-9_]/g, "");
-  const mockEmail = `${safeUsername}@linkmeup.local`;
+  const mockEmail = `${safeUsername}@linkmeup.app`;
 
   const supabase = createClient();
 

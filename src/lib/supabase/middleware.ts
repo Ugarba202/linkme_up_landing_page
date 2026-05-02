@@ -18,10 +18,9 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  // ─── Frontend Test Mode Bypass ───────────────────────────────────────────
-  // If the mock session cookie is present, allow access to protected routes
-  // without a real Supabase session. This is for testing the UI flow.
-  const hasMockSession = request.cookies.has("linkmeup-mock-session");
+  // ─── Demo Mode Bypass ───────────────────────────────────────────────────
+  const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+  const hasMockSession = request.cookies.has("linkmeup-mock-session") || isDemoMode;
   const pathname = request.nextUrl.pathname;
 
   // ─── Configuration Guard ────────────────────────────────────────────────
