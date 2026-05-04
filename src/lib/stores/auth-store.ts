@@ -39,36 +39,9 @@ export const useAuthStore = create<AuthState>()(
       setLoading: (loading) => set({ loading }),
       getProfileByUsername: async (username: string) => {
         set({ loading: true });
-        
-        try {
-          // Use dynamic import to avoid bundling supabase/client in the main store initial load
-          const { createClient } = await import("@/lib/supabase/client");
-          const supabase = createClient();
-          
-          const { data: profileRow, error: profileError } = await (supabase.from("profiles") as any)
-            .select("*")
-            .eq("username", username)
-            .maybeSingle();
-
-          if (profileError || !profileRow) {
-            set({ profile: null, loading: false });
-            return;
-          }
-
-          const { data: linkRows } = await supabase
-            .from("social_links")
-            .select("*")
-            .eq("user_id", profileRow.id)
-            .order("sort_order", { ascending: true });
-
-          const { profileFromRow } = await import("@/types/profile");
-          const profile = profileFromRow(profileRow, linkRows || []);
-          
-          set({ profile, loading: false });
-        } catch (err) {
-          console.error("Error fetching profile:", err);
-          set({ profile: null, loading: false });
-        }
+        // Fetching logic will be implemented with the new Prisma/Next.js API
+        console.log(`Fetching profile for ${username} (Migration in progress)`);
+        set({ loading: false });
       },
       reset: () =>
         set({

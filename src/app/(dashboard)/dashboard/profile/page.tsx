@@ -24,6 +24,8 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { uploadImage } from "@/lib/supabase/storage";
+import { updateAvatarUrl, updateBannerUrl, updateProfile } from "@/app/actions/profile";
 
 interface ProfileFormData {
   fullName: string;
@@ -39,6 +41,7 @@ export default function ProfileEditor() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, reset } = useForm<ProfileFormData>({
     defaultValues: {
@@ -71,7 +74,15 @@ export default function ProfileEditor() {
       }
       
       const cleanUsername = data.username.toLowerCase().trim();
-      await new Promise(r => setTimeout(r, 800));
+      
+      // Real server action call
+      const result = await updateProfile({
+        fullName: data.fullName,
+        username: cleanUsername,
+        bio: data.bio,
+      });
+
+      if (result.error) throw new Error(result.error);
 
       updateProfileData({
         fullName: data.fullName,
@@ -93,15 +104,66 @@ export default function ProfileEditor() {
     const file = e.target.files?.[0];
     if (!file || !user) return;
 
+    // Validate file type and size
+    if (!file.type.startsWith('image/')) {
+      setErrorMsg("Please upload an image file.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setErrorMsg("Image size must be less than 2MB.");
+      return;
+    }
+
     setIsUploading(true);
     setErrorMsg("");
 
     try {
-      await new Promise(r => setTimeout(r, 1000));
-      const localUrl = URL.createObjectURL(file);
-      updateProfileData({ avatarUrl: localUrl });
+      const fileName = `${user.id}/avatar-${Date.now()}`;
+      const publicUrl = await uploadImage(file, 'avatars', fileName);
+      
+      // Update DB
+      const result = await updateAvatarUrl(publicUrl);
+      if (result.error) throw new Error(result.error);
+
+      // Update local state
+      updateProfileData({ avatarUrl: publicUrl });
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 2000);
     } catch (err: any) {
-      setErrorMsg("Failed to upload image.");
+      setErrorMsg(err.message || "Failed to upload image.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+
+    if (!file.type.startsWith('image/')) {
+      setErrorMsg("Please upload an image file.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMsg("Banner size must be less than 5MB.");
+      return;
+    }
+
+    setIsUploading(true);
+    setErrorMsg("");
+
+    try {
+      const fileName = `${user.id}/banner-${Date.now()}`;
+      const publicUrl = await uploadImage(file, 'banners', fileName);
+      
+      const result = await updateBannerUrl(publicUrl);
+      if (result.error) throw new Error(result.error);
+
+      updateProfileData({ bannerUrl: publicUrl });
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 2000);
+    } catch (err: any) {
+      setErrorMsg(err.message || "Failed to upload banner.");
     } finally {
       setIsUploading(false);
     }
@@ -221,9 +283,53 @@ export default function ProfileEditor() {
                    className="w-full min-h-[140px] bg-white/[0.04] border border-white/5 focus:ring-2 focus:ring-primary rounded-2xl px-5 py-5 text-sm font-bold leading-relaxed text-white placeholder:text-white/10 outline-none transition-all"
                    placeholder="Describe your essence in the digital space..."
                  />
+               <div className="flex flex-col md:flex-row items-center gap-8 border-b border-white/5 pb-8 pt-4">
+                <div className="relative group">
+                  <div className="w-48 h-24 rounded-2xl p-1 bg-gradient-to-tr from-primary/30 to-secondary/30 shadow-2xl transition-all duration-700 group-hover:scale-[1.02]">
+                    <div className="w-full h-full rounded-2xl bg-[#050510] flex items-center justify-center overflow-hidden relative border border-white/5">
+                       {isUploading ? (
+                        <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-2 z-20 backdrop-blur-sm">
+                           <Loader2 className="w-4 h-4 animate-spin text-primary" />
+                        </div>
+                      ) : null}
+                      
+                      {profile.bannerUrl ? (
+                        <img src={profile.bannerUrl} alt="Banner" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center">
+                          <Sparkles className="w-6 h-6 text-white/5" />
+                        </div>
+                      )}
+                      
+                      <button 
+                        type="button"
+                        onClick={() => bannerInputRef.current?.click()}
+                        className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center cursor-pointer gap-2 backdrop-blur-[2px]"
+                      >
+                         <Camera className="w-5 h-5 text-white" />
+                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white">Upload Banner</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex-1 text-center md:text-left space-y-3">
+                   <h3 className="text-xl font-black tracking-tight">Banner Signature</h3>
+                   <p className="text-white/30 text-[10px] font-bold leading-relaxed max-w-[280px]">
+                     Add a cinematic header to your profile. Recommended aspect ratio 2:1.
+                   </p>
+                   <Button 
+                    type="button"
+                    variant="ghost" 
+                    onClick={() => bannerInputRef.current?.click()}
+                    className="text-primary hover:text-primary-light hover:bg-primary/5 font-black h-auto p-0 text-[10px] uppercase tracking-widest"
+                   >
+                     Update Banner <ArrowRight className="ml-2 w-3 h-3" />
+                   </Button>
+                </div>
               </div>
 
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-8 ">
+               <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-8 ">
                  {errorMsg && (
                     <p className="text-red-500 font-bold text-[10px] uppercase tracking-widest bg-red-500/10 px-6 py-3 rounded-2xl flex items-center gap-3">
                       <ShieldCheck className="w-4 h-4" /> {errorMsg}
@@ -310,6 +416,13 @@ export default function ProfileEditor() {
         className="hidden"
         accept="image/*"
         onChange={handleAvatarUpload}
+      />
+      <input
+        type="file"
+        ref={bannerInputRef}
+        className="hidden"
+        accept="image/*"
+        onChange={handleBannerUpload}
       />
     </div>
   );

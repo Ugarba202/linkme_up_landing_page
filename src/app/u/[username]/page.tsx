@@ -20,6 +20,7 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { PLATFORMS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { trackEvent } from "@/app/actions/analytics";
 import { 
   SiInstagram, 
   SiTiktok, 
@@ -59,6 +60,23 @@ export default function PublicProfile({ params }: { params: { username: string }
     };
     loadProfile();
   }, [params.username, getProfileByUsername]);
+
+  // Track view event
+  useEffect(() => {
+    if (profile && !loading) {
+      const sessionKey = `viewed_${profile.id}`;
+      if (!sessionStorage.getItem(sessionKey)) {
+        trackEvent(profile.id, "view");
+        sessionStorage.setItem(sessionKey, "true");
+      }
+    }
+  }, [profile, loading]);
+
+  const handleLinkClick = (linkId: string) => {
+    if (profile) {
+      trackEvent(profile.id, "click");
+    }
+  };
 
   if (loading) return (
     <div className="min-h-screen bg-[#050510] flex flex-col items-center pt-16 px-6 animate-pulse">
@@ -213,6 +231,7 @@ export default function PublicProfile({ params }: { params: { username: string }
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => handleLinkClick(link.id)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7 + (i * 0.1) }}

@@ -18,15 +18,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { setQrGenerated } from "@/app/actions/profile";
+import { useEffect } from "react";
 
 export default function QRPage() {
   const { profile, user, initialized } = useAuth();
   const [copied, setCopied] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (profile && !profile.isQrGenerated) {
+      setQrGenerated();
+    }
+  }, [profile]);
+
   if (!initialized || !profile || !user) return null;
 
-  const publicUrl = `https://linkmeup.app/u/${profile.username}`;
+  const publicUrl = profile.publicUrl || `https://linkmeup.app/u/${profile.username}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(publicUrl);
