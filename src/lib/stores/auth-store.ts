@@ -4,14 +4,10 @@ import type { Profile } from "@/types/profile";
 import type { SocialLink } from "@/types/profile";
 
 interface AuthState {
-  /** The current user profile, null if not authenticated */
   profile: Profile | null;
-  /** Whether the auth state has been initialized */
   initialized: boolean;
-  /** Whether authentication is currently loading */
   loading: boolean;
 
-  // Actions
   setProfile: (profile: Profile | null) => void;
   updateProfileData: (data: Partial<Profile>) => void;
   updateSocialLinks: (links: SocialLink[]) => void;
@@ -39,9 +35,35 @@ export const useAuthStore = create<AuthState>()(
       setLoading: (loading) => set({ loading }),
       getProfileByUsername: async (username: string) => {
         set({ loading: true });
-        // Fetching logic will be implemented with the new Prisma/Next.js API
-        console.log(`Fetching profile for ${username} (Migration in progress)`);
-        set({ loading: false });
+        
+        try {
+          const { createClient } = await import("@/lib/supabase/client");
+          const supabase = createClient();
+          
+          const { data: profileRow, error: profileError } = await (supabase.from("profiles") as any)
+            .select("*")
+            .eq("username", username)
+            .maybeSingle();
+
+          if (profileError || !profileRow) {
+            set({ profile: null, loading: false });
+            return;
+          }
+
+          const { data: linkRows } = await supabase
+            .from("social_links")
+            .select("*")
+            .eq("user_id", profileRow.id)
+            .order("sort_order", { ascending: true });
+
+          const { profileFromRow } = await import("@/types/profile");
+          const profile = profileFromRow(profileRow, linkRows || []);
+          
+          set({ profile, loading: false });
+        } catch (err) {
+          console.error("Error fetching profile:", err);
+          set({ profile: null, loading: false });
+        }
       },
       reset: () =>
         set({
@@ -51,7 +73,7 @@ export const useAuthStore = create<AuthState>()(
         }),
     }),
     {
-      name: "linkmeup-auth-storage", // unique name
+      name: "linkmeup-auth-storage",
     }
   )
 );

@@ -118,8 +118,8 @@ export default function ProfileEditor() {
     setErrorMsg("");
 
     try {
-      const fileName = `${user.id}/avatar-${Date.now()}`;
-      const publicUrl = await uploadImage(file, 'avatars', fileName);
+      // Pass just the user ID; the utility handles the naming
+      const publicUrl = await uploadImage(file, 'avatars', user.id);
       
       // Update DB
       const result = await updateAvatarUrl(publicUrl);
@@ -153,8 +153,7 @@ export default function ProfileEditor() {
     setErrorMsg("");
 
     try {
-      const fileName = `${user.id}/banner-${Date.now()}`;
-      const publicUrl = await uploadImage(file, 'banners', fileName);
+      const publicUrl = await uploadImage(file, 'banners', user.id);
       
       const result = await updateBannerUrl(publicUrl);
       if (result.error) throw new Error(result.error);

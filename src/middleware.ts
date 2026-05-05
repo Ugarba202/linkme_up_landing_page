@@ -1,9 +1,8 @@
-import { NextResponse } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  // Pass-through middleware until custom auth (Auth.js) is implemented
-  return NextResponse.next();
+  return await updateSession(request);
 }
 
 export const config = {
